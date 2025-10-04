@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js'; // Importa a função de conexão
 import authRoutes from './routes/authRoutes.js'; // NOVO: Importa as rotas de autenticação
+import assetRoutes from './routes/assetRoutes.js'; 
 
 // 1. Carrega as variáveis de ambiente
 dotenv.config();
@@ -34,6 +35,10 @@ app.get('/', (req, res) => {
 // Conecta as rotas de autenticação, prefixando todas elas com /api/auth
 // A rota completa para o registro agora é: POST /api/auth/register
 app.use('/api/auth', authRoutes); 
+
+// NOVO: Rotas de Ativos (Protegidas)
+app.use('/api/assets', assetRoutes); // Conecte o roteador de ativos
+
 
 // ----------------------------------------------------
 // INICIALIZAÇÃO DO SERVIDOR EXPRESS
