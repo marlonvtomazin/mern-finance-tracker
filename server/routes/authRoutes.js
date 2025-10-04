@@ -2,7 +2,7 @@
 
 import express from 'express';
 // Importamos a função de registro do nosso controlador
-import { registerUser, loginUser } from '../controllers/authController.js'; 
+import { registerUser, loginUser, logoutUser } from '../controllers/authController.js'; 
 
 // Cria uma instância de Router para definir rotas
 const router = express.Router();
@@ -13,5 +13,7 @@ router.post('/register', registerUser);
 
 // NOVO: Rota de Login
 router.post('/login', loginUser); 
+
+router.post('/logout', logoutUser);
 
 export default router;

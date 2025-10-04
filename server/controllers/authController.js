@@ -78,7 +78,15 @@ const loginUser = async (req, res) => {
     }
 };
 
+const logoutUser = (req, res) => {
+    // Para JWT, o logout é puramente no cliente (removendo o token).
+    // Aqui, podemos limpar um cookie se estivéssemos usando-o,
+    // mas para JWT no Local Storage, apenas enviamos uma resposta de sucesso.
+    res.status(200).json({ message: 'Logout bem-sucedido. Token deve ser removido pelo cliente.' });
+};
+
 export {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser,
 };
