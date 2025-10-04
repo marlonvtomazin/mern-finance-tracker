@@ -1,0 +1,85 @@
+/* Regras de reset básicas */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 1. Configuração do Corpo Principal */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #2c3e50; /* Fundo escuro (azul marinho escuro) */
+  color: #ecf0f1; /* Texto branco-acinzentado para contraste */
+  min-height: 100vh; 
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+/* 2. Estilos para o Main (onde as páginas são renderizadas) */
+main {
+  width: 100%;
+  max-width: 1200px; 
+}
+
+/* 3. Estilos do Formulário (Usados por Login e Register) */
+.form-container { 
+    background-color: #34495e; /* Um tom um pouco mais claro que o fundo */
+    border: 1px solid #4a6c8e; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    max-width: 400px; /* Definindo largura máxima no CSS, não no inline */
+    margin: 50px auto; 
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+.form-content { /* Usado para o formulário dentro do container */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Estilo dos inputs */
+.form-input { 
+    padding: 10px;
+    border: 1px solid #6c8ca0;
+    border-radius: 4px;
+    background-color: #4a6c8e; 
+    color: #ecf0f1; 
+}
+.form-input::placeholder {
+    color: #bdc3c7; 
+}
+
+/* Estilo dos botões */
+.form-button { 
+    padding: 10px;
+    background-color: #1abc9c; /* Verde água vibrante */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.form-button:hover {
+    background-color: #16a085; 
+}
+
+/* Estilo de erro */
+.form-error { 
+    color: #e74c3c; 
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Estilo dos links */
+.form-link { 
+    color: #3498db; 
+    text-decoration: none;
+}
+.form-link-text {
+    margin-top: 20px;
+    font-size: 14px;
+}
