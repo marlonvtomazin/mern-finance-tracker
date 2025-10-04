@@ -17,7 +17,25 @@ const app = express();
 
 // Middlewares GLOBAIS
 app.use(express.json()); 
-app.use(cors());         
+
+// 🚨 NOVO: Configuração do Middleware CORS
+// Esta configuração diz ao navegador para permitir requisições vindas
+// do seu frontend (http://localhost:5173).
+const allowedOrigins = ['http://localhost:5173']; 
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Permite requisições sem 'origin' (ex: ferramentas como Postman)
+        if (!origin || allowedOrigins.includes(origin)) { 
+            callback(null, true);
+        } else {
+            callback(new Error('Não permitido pelo CORS'));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Necessário para enviar cookies/headers de autenticação
+    optionsSuccessStatus: 204
+};
+app.use(cors(corsOptions));      
 
 // ----------------------------------------------------
 // ROTAS DA API
