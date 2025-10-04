@@ -47,6 +47,38 @@ const registerUser = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+    // 1. Obter email e senha
+    const { email, password } = req.body;
+
+    try {
+        // 2. Encontrar o usuário pelo email, forçando a inclusão do campo 'password'
+        const user = await User.findOne({ email }).select('+password'); 
+
+        // 3. Verificar se o usuário existe E se a senha fornecida corresponde
+        if (user && await user.matchPassword(password)) {
+            
+            // 4. Login bem-sucedido: retorna os dados e um novo Token JWT
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,           
+                token: generateToken(user._id),
+            });
+            
+        } else {
+            // 5. Falha na autenticação
+            res.status(401).json({ message: 'Credenciais inválidas.' });
+        }
+
+    } catch (error) {
+        console.error('Erro no Login:', error);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
+};
+
 export {
-    registerUser
+    registerUser,
+    loginUser
 };
