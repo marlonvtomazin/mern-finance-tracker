@@ -1,3 +1,5 @@
+/* client/src/index.css */
+
 /* Regras de reset básicas */
 * {
   box-sizing: border-box;
@@ -8,32 +10,38 @@
 /* 1. Configuração do Corpo Principal */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #2c3e50; /* Fundo escuro (azul marinho escuro) */
-  color: #ecf0f1; /* Texto branco-acinzentado para contraste */
-  min-height: 100vh; 
+  background-color: #2c3e50; /* Fundo escuro */
+  color: #ecf0f1; /* Texto branco-acinzentado */
+  min-height: 100vh;
+  
+  /* 🚨 MUDANÇAS AQUI: Permite que o Header fique fixo no topo e o Main abaixo */
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  flex-direction: column; /* Empilha o Header e o Main verticalmente */
+  justify-content: flex-start; /* Alinha o conteúdo ao topo */
+  align-items: stretch; /* Ocupa a largura total */
 }
 
-/* 2. Estilos para o Main (onde as páginas são renderizadas) */
+/* 2. Estilos para o Main (Onde o conteúdo da rota é renderizado) */
 main {
   width: 100%;
   max-width: 1200px; 
+  margin: 0 auto; /* Centraliza o Main horizontalmente */
+  padding-top: 60px; /* 🚨 NOVO: Cria espaço para o Header de 60px de altura */
+  flex-grow: 1; /* Permite que o Main ocupe todo o espaço vertical restante */
 }
 
 /* 3. Estilos do Formulário (Usados por Login e Register) */
 .form-container { 
-    background-color: #34495e; /* Um tom um pouco mais claro que o fundo */
+    background-color: #34495e; 
     border: 1px solid #4a6c8e; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-    max-width: 400px; /* Definindo largura máxima no CSS, não no inline */
-    margin: 50px auto; 
+    max-width: 400px;
+    margin: 50px auto; /* Mantém o formulário centrado verticalmente DENTRO do Main */
     padding: 20px;
     border-radius: 8px;
     text-align: center;
 }
-.form-content { /* Usado para o formulário dentro do container */
+.form-content { 
     display: flex;
     flex-direction: column;
     gap: 15px;
