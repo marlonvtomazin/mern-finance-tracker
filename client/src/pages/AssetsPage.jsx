@@ -1,25 +1,34 @@
 // client/src/pages/AssetsPage.jsx
 
-import React from 'react';
+import React, { useState } from 'react';
 import AssetCharts from '../components/AssetCharts';
+import AssetSnapshotTable from '../components/AssetSnapshotTable'; 
+import AssetSnapshotForm from '../components/AssetSnapshotForm'; 
 
 const AssetsPage = () => {
+    // ESTADO DE CHAVE: Força o AssetCharts e a AssetSnapshotTable a recarregarem
+    const [dataKey, setDataKey] = useState(0); 
+
+    // Função que será chamada após um DELETE (na tabela) ou um POST (no formulário)
+    const handleDataUpdate = () => {
+        // Incrementa a chave para forçar os componentes filhos a re-montar/re-rodar o useEffect
+        setDataKey(prevKey => prevKey + 1);
+    };
+
     return (
-        // O padding-top é essencial para o conteúdo não ficar escondido
-        // atrás do Header fixo (que tem 60px de altura)
         <div className="page-content" style={{ paddingTop: '80px', padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <h1>Meus Ativos e Histórico</h1>
-            <p>Gerencie seus investimentos e visualize a performance do seu patrimônio ao longo do tempo.</p>
             
-            {/* Componente do Gráfico de Snapshots */}
-            <AssetCharts /> 
+            {/* 🚨 Formulário de Múltiplos Ativos */}
+            <AssetSnapshotForm onSnapshotSaved={handleDataUpdate} />
             
-            {/* Futuramente, sua tabela de ativos atuais estará aqui */}
-            <div style={{ marginTop: '50px' }}>
-                <h2>Lista de Ativos Atuais</h2>
-                {/* Ex: <AssetTable /> */}
-                <p>Nenhuma tabela de ativos atual implementada ainda. O gráfico usa os dados históricos (Snapshots).</p>
-            </div>
+            <hr style={{ margin: '40px 0', borderTop: '1px solid #eee' }} />
+            
+            {/* Componente do Gráfico (Recarrega ao mudar dataKey) */}
+            <AssetCharts key={`chart-${dataKey}`} /> 
+            
+            {/* Tabela de Gerenciamento (Recarrega ao mudar dataKey) */}
+            <AssetSnapshotTable key={`table-${dataKey}`} onDataUpdate={handleDataUpdate} /> 
 
         </div>
     );

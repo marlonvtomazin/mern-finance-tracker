@@ -26,7 +26,7 @@ const saveAssetSnapshots = asyncHandler(async (req, res) => {
 
     // Lógica do bulkWrite (sua lógica original)
     for (const dateKey in snapshotsData) {
-        const snapshotDate = new Date(dateKey);
+         const snapshotDate = new Date(dateKey + 'T00:00:00');
         const assetsArray = snapshotsData[dateKey];
 
         const newSnapshot = {
