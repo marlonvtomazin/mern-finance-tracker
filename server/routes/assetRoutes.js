@@ -1,22 +1,25 @@
-// server/routes/assetRoutes.js
+// server/routes/assetRoutes.js (COM ROTAS COMPLETAS DE CRUD SNAPSHOT)
 
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js'; 
-import {saveAssetSnapshots, getAssetSnapshots } from '../controllers/assetController.js'; 
+import { saveAssetSnapshots, getAssetSnapshots, deleteAssetSnapshot } from '../controllers/assetController.js'; 
 
 const router = express.Router();
 
-// --------------------------------------------------------------------------
-// TODAS estas rotas estão PROTEGIDAS pelo middleware 'protect'
-// Apenas usuários que enviem um Token JWT válido no cabeçalho podem acessá-las
-// --------------------------------------------------------------------------
+// Aplica o middleware 'protect' a todas as rotas neste roteador
+// Todas as funções já garantem que req.user._id está presente.
+router.use(protect); 
 
-// Rota para BUSCAR todos os snapshots de ativos do usuário logado
-// Endpoint: GET /api/assets
-router.route('/').get(protect, getAssetSnapshots);
+// Rota RAIZ (/) para GET e POST
+// Endpoint: /api/assets
+router.route('/')
+    .get(getAssetSnapshots)      // CRUD: LISTAR / BUSCAR TODOS
+    .post(saveAssetSnapshots);   // CRUD: CRIAR / ATUALIZAR em LOTE
 
-// Rota para SALVAR/ATUALIZAR snapshots de ativos (recebe o JSON complexo)
-// Endpoint: POST /api/assets
-router.route('/').post(protect, saveAssetSnapshots);
+// Rota PARAMETRIZADA (/:id) para DELETE
+// Endpoint: /api/assets/:id
+router.route('/:id')
+    .delete(deleteAssetSnapshot); // CRUD: DELETAR por ID
+
 
 export default router;

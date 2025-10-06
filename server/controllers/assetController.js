@@ -1,81 +1,108 @@
-// server/controllers/assetController.js
+// server/controllers/assetController.js (VERSÃO FINAL E ESTÁVEL)
 
 import AssetSnapshot from '../models/AssetSnapshot.js';
+// 🚨 ESSENCIAL para a estabilidade do Express com Mongoose
+import asyncHandler from 'express-async-handler'; 
+
+// =========================================================
+// ROTA: POST /api/assets (Criação/Atualização em Lote)
+// =========================================================
 
 /**
- * @desc    Adicionar ou Atualizar Registros de Ativos
+ * @desc    Adicionar ou Atualizar Registros de Ativos em LOTE (Upsert)
  * @route   POST /api/assets
- * @access  Private (Requer token JWT)
- * * Esta função é projetada para receber o seu formato de dados JSON 
- * (com a data como chave) e converter para o formato do Mongoose.
+ * @access  Private 
  */
-const saveAssetSnapshots = async (req, res) => {
-    // O ID do usuário logado é anexado pelo middleware 'protect'
+const saveAssetSnapshots = asyncHandler(async (req, res) => {
     const userId = req.user._id; 
-    // O corpo da requisição é o JSON no formato { "data_chave": [ { ativos } ] }
     const snapshotsData = req.body; 
 
-    try {
-        const operations = [];
-
-        // Itera sobre cada chave de data no JSON recebido
-        for (const dateKey in snapshotsData) {
-            // Converte a chave (ex: "10-16-2024") para um objeto Date
-            const snapshotDate = new Date(dateKey);
-            const assetsArray = snapshotsData[dateKey];
-
-            // Cria o objeto que o Mongoose espera
-            const newSnapshot = {
-                user: userId,
-                snapshotDate: snapshotDate,
-                assets: assetsArray.map(asset => ({
-                    name: asset.nome,
-                    bruto: asset.bruto,
-                    liquido: asset.liquido
-                }))
-            };
-
-            // Prepara a operação de upsert:
-            // 1. Busca um documento existente com a mesma data e usuário.
-            // 2. Se encontrar, atualiza-o (com a nova lista de ativos).
-            // 3. Se não encontrar, insere-o.
-            operations.push({
-                updateOne: {
-                    filter: { user: userId, snapshotDate: snapshotDate },
-                    update: { $set: newSnapshot },
-                    upsert: true // Insere se não encontrar
-                }
-            });
-        }
-
-        // Executa todas as operações em lote
-        const result = await AssetSnapshot.bulkWrite(operations);
-
-        res.status(201).json({ 
-            message: 'Registros de ativos salvos com sucesso.', 
-            summary: result 
-        });
-
-    } catch (error) {
-        console.error('Erro ao salvar snapshots de ativos:', error);
-        res.status(500).json({ message: 'Erro interno ao processar os ativos.', error: error.message });
+    if (!snapshotsData || Object.keys(snapshotsData).length === 0) {
+        res.status(400);
+        throw new Error('Nenhum dado de snapshot enviado no corpo da requisição.');
     }
-};
+
+    const operations = [];
+
+    // Lógica do bulkWrite (sua lógica original)
+    for (const dateKey in snapshotsData) {
+        const snapshotDate = new Date(dateKey);
+        const assetsArray = snapshotsData[dateKey];
+
+        const newSnapshot = {
+            user: userId,
+            snapshotDate: snapshotDate,
+            assets: assetsArray.map(asset => ({
+                name: asset.nome,
+                bruto: asset.bruto,
+                liquido: asset.liquido
+            }))
+        };
+
+        operations.push({
+            updateOne: {
+                filter: { user: userId, snapshotDate: snapshotDate },
+                update: { $set: newSnapshot }, 
+                upsert: true // Insere se não encontrar
+            }
+        });
+    }
+
+    const result = await AssetSnapshot.bulkWrite(operations);
+
+    res.status(201).json({ 
+        message: 'Registros de ativos salvos em lote com sucesso.', 
+        summary: result 
+    });
+});
+
+// =========================================================
+// ROTA: GET /api/assets (Listagem)
+// =========================================================
 
 /**
  * @desc    Obter todos os Registros de Ativos de um usuário
  * @route   GET /api/assets
- * @access  Private (Requer token JWT)
+ * @access  Private 
  */
-const getAssetSnapshots = async (req, res) => {
-    // O Middleware 'protect' garante que apenas os ativos do usuário logado sejam buscados.
+const getAssetSnapshots = asyncHandler(async (req, res) => {
     const snapshots = await AssetSnapshot.find({ user: req.user._id })
-        .sort({ snapshotDate: 1 }); // Ordena por data (o mais antigo primeiro)
-
+        .sort({ snapshotDate: 1 }); 
     res.json(snapshots);
-};
+});
+
+// =========================================================
+// ROTA: DELETE /api/assets/:id (Exclusão)
+// =========================================================
+
+/**
+ * @desc    Deletar um Snapshot de Ativo específico
+ * @route   DELETE /api/assets/:id
+ * @access  Private 
+ */
+const deleteAssetSnapshot = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    // Garante que o usuário só possa deletar seus próprios snapshots
+    const snapshot = await AssetSnapshot.findOneAndDelete({ 
+        _id: id, 
+        user: req.user._id 
+    });
+
+    if (!snapshot) {
+        res.status(404);
+        throw new Error('Snapshot não encontrado ou você não tem permissão para excluí-lo.');
+    }
+
+    res.status(200).json({ 
+        message: 'Snapshot excluído com sucesso.', 
+        id: id 
+    });
+});
+
 
 export {
     saveAssetSnapshots,
-    getAssetSnapshots
+    getAssetSnapshots,
+    deleteAssetSnapshot 
 };

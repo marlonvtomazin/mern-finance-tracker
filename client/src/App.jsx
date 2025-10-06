@@ -1,23 +1,22 @@
 // client/src/App.jsx (COMPLETO E ATUALIZADO)
 
-import React from 'react'; // 🚨 Importe o React
-import { Routes, Route, useNavigate } from 'react-router-dom'; // 🚨 Importe o useNavigate
+import React from 'react'; 
+import { Routes, Route, useNavigate } from 'react-router-dom'; 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
-import PrivateRoute from './components/PrivateRoute'; 
+// 🚨 Importe a nova página de Ativos
+import AssetsPage from './pages/AssetsPage'; 
 
-// Crie um Header básico para ter um botão de logout
+import PrivateRoute from './components/PrivateRoute'; 
 import Header from './components/Header'; 
 
 
 function App() {
-    // Use useNavigate para redirecionar após o logout
     const navigate = useNavigate(); 
     
-    // 🚨 NOVA FUNÇÃO: Lógica de Logout
     const handleLogout = () => {
-        // 1. Remove o token do Local Storage (o passo mais importante)
+        // 1. Remove o token do Local Storage
         localStorage.removeItem('token'); 
         
         // 2. Redireciona para o Login
@@ -28,21 +27,43 @@ function App() {
         <>
             {/* O Header passa a função de logout para o componente */}
             <Header onLogout={handleLogout} /> 
-            <main>
+            
+            {/* O padding-top no main é crucial para o conteúdo não ficar
+                escondido atrás do Header fixo */}
+            <main style={{ minHeight: '100vh', paddingTop: '60px' }}> 
                 <Routes>
                     
+                    {/* Rotas Públicas */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     
+                    {/* ------------------------------------------- */}
+                    {/* ROTAS PROTEGIDAS (Usam o PrivateRoute)      */}
+                    {/* ------------------------------------------- */}
+
+                    {/* Rota Raiz (Dashboard) */}
                     <Route 
                         path="/" 
                         element={
                             <PrivateRoute>
-                                {/* O Dashboard também recebe a função de logout, se necessário */}
                                 <DashboardPage onLogout={handleLogout} /> 
                             </PrivateRoute>
                         } 
                     /> 
+                    
+                    {/* 🚨 NOVA ROTA PROTEGIDA: Ativos */}
+                    <Route 
+                        path="/assets" 
+                        element={
+                            <PrivateRoute>
+                                <AssetsPage /> {/* Renderiza AssetsPage com o gráfico */}
+                            </PrivateRoute>
+                        } 
+                    /> 
+                    
+                    {/* Aqui entrariam outras rotas protegidas, como /transactions */}
+                    {/* Exemplo: <Route path="/transactions" element={<PrivateRoute><TransactionsPage /></PrivateRoute>} /> */}
+                    
                 </Routes>
             </main>
         </>
