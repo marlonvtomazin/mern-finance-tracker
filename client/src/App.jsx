@@ -42,24 +42,9 @@ function App() {
                     {/* ------------------------------------------- */}
 
                     {/* Rota Raiz (Dashboard) */}
-                    <Route 
-                        path="/" 
-                        element={
-                            <PrivateRoute>
-                                <DashboardPage onLogout={handleLogout} /> 
-                            </PrivateRoute>
-                        } 
-                    /> 
-                    
+                    <Route path="/" element={<PrivateRoute><DashboardPage onLogout={handleLogout} /> </PrivateRoute>} /> 
                     {/* 🚨 NOVA ROTA PROTEGIDA: Ativos */}
-                    <Route 
-                        path="/assets" 
-                        element={
-                            <PrivateRoute>
-                                <AssetsPage /> {/* Renderiza AssetsPage com o gráfico */}
-                            </PrivateRoute>
-                        } 
-                    /> 
+                    <Route path="/assets" element={<PrivateRoute><AssetsPage /> {/* Renderiza AssetsPage com o gráfico */}</PrivateRoute>} /> 
                     
                     {/* Aqui entrariam outras rotas protegidas, como /transactions */}
                     {/* Exemplo: <Route path="/transactions" element={<PrivateRoute><TransactionsPage /></PrivateRoute>} /> */}
