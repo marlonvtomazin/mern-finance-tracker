@@ -8,7 +8,6 @@ const Header = ({ onLogout }) => {
     const isAuthenticated = localStorage.getItem('token'); 
     
     const [isAssetsDropdownOpen, setIsAssetsDropdownOpen] = useState(false); 
-    // Estado para controlar o hover em cada link (para o efeito visual)
     const [dropdownLinkHover, setDropdownLinkHover] = useState(null); 
     
     if (!isAuthenticated) {
@@ -18,7 +17,7 @@ const Header = ({ onLogout }) => {
     const handleMouseEnter = () => setIsAssetsDropdownOpen(true);
     const handleMouseLeave = () => {
         setIsAssetsDropdownOpen(false);
-        setDropdownLinkHover(null); // Limpa o estado de hover ao fechar
+        setDropdownLinkHover(null); 
     };
 
     // Função auxiliar para aplicar estilos de hover nos links
@@ -56,7 +55,7 @@ const Header = ({ onLogout }) => {
                                 Histórico (Total ao longo do tempo)
                             </Link>
                             
-                            {/* 🚨 NOVO LINK E ROTA para o Gráfico Separado por Tipo */}
+                            {/* Histórico: Separado por Tipo (Bruto vs Líquido) */}
                             <Link 
                                 to="/asset-type-history" 
                                 style={getLinkStyle('type-history')}
@@ -64,6 +63,16 @@ const Header = ({ onLogout }) => {
                                 onMouseLeave={() => setDropdownLinkHover(null)}
                             > 
                                 Histórico (Separado por Tipo)
+                            </Link>
+
+                            {/* NOVO LINK: Evolução dos Ganhos */}
+                            <Link 
+                                to="/asset-type-gain-loss" 
+                                style={getLinkStyle('type-gain-loss')}
+                                onMouseEnter={() => setDropdownLinkHover('type-gain-loss')}
+                                onMouseLeave={() => setDropdownLinkHover(null)}
+                            > 
+                                Histórico (Ganho vs Perda)
                             </Link>
                         </div>
                     )}
@@ -80,11 +89,11 @@ const Header = ({ onLogout }) => {
 };
 
 // ----------------------------------------------------
-// ESTILOS MODERNIZADOS
+// ESTILOS MODERNIZADOS (Com correção do display duplicado no dropdown)
 // ----------------------------------------------------
 const styles = {
     header: {
-        backgroundColor: '#2c3e50', // Cor de fundo mais escura
+        backgroundColor: '#2c3e50', 
         color: '#ecf0f1',
         padding: '10px 40px',
         display: 'flex',
@@ -99,7 +108,7 @@ const styles = {
         zIndex: 100,
     },
     logo: {
-        color: '#2ecc71', // Cor de destaque verde
+        color: '#2ecc71', 
         textDecoration: 'none',
         fontSize: '24px',
         fontWeight: 'bold',
@@ -121,10 +130,9 @@ const styles = {
     // DROPDOWN
     dropdown: {
         position: 'relative',
-        display: 'inline-block',
-        height: '100%', // Garante que a área de hover seja maior
-        display: 'flex',
+        display: 'flex', // 🚨 Corrigido: Mantido apenas 'flex'
         alignItems: 'center',
+        height: '100%', 
     },
     dropdownTitle: {
         color: '#ecf0f1',
@@ -141,17 +149,15 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute',
-        backgroundColor: '#34495e', // Cor de fundo do Header
+        backgroundColor: '#34495e', 
         minWidth: '250px', 
-        // Sombra moderna e mais suave
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)', 
         zIndex: 101, 
         top: '100%', 
         left: '0',
-        padding: '8px 0', // Padding interno
-        borderRadius: '6px', // Cantos mais suaves
+        padding: '8px 0', 
+        borderRadius: '6px', 
         border: '1px solid #4a6c8e',
-        // Adiciona uma pequena transição para suavizar a abertura (limitado sem CSS real)
         transition: 'opacity 0.2s ease-out', 
     },
     dropdownLink: {
@@ -162,10 +168,9 @@ const styles = {
         fontSize: '14px',
         transition: 'background-color 0.1s ease-in',
     },
-    // NOVO: Estilo de Hover simulado
     dropdownLinkHover: {
-        backgroundColor: '#2c3e50', // Cor um pouco mais escura que o fundo do menu
-        color: '#2ecc71', // Destaque verde
+        backgroundColor: '#2c3e50', 
+        color: '#2ecc71', 
     },
     logoutButton: {
         padding: '8px 15px',
