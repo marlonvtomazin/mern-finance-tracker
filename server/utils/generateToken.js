@@ -11,7 +11,7 @@ const generateToken = (id) => {
     return jwt.sign(
         { id },
         process.env.JWT_SECRET, // 1. Chave Secreta
-        { expiresIn: '30d' }     // 2. Opções (Expiração)
+        { expiresIn: '1d' }     // 2. Opções (Expiração)
     );
 };
 

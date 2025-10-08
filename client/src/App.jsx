@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 // 🚨 Importe a nova página de Ativos
 import AssetsPage from './pages/AssetsPage'; 
+import AssetHistoryByTypePage from './pages/AssetHistoryByTypePage';
 
 import PrivateRoute from './components/PrivateRoute'; 
 import Header from './components/Header'; 
@@ -43,8 +44,11 @@ function App() {
 
                     {/* Rota Raiz (Dashboard) */}
                     <Route path="/" element={<PrivateRoute><DashboardPage onLogout={handleLogout} /> </PrivateRoute>} /> 
+                    
                     {/* 🚨 NOVA ROTA PROTEGIDA: Ativos */}
                     <Route path="/assets" element={<PrivateRoute><AssetsPage /> {/* Renderiza AssetsPage com o gráfico */}</PrivateRoute>} /> 
+
+                    <Route path="/asset-type-history" element={<PrivateRoute><AssetHistoryByTypePage /></PrivateRoute>} /> 
                     
                     {/* Aqui entrariam outras rotas protegidas, como /transactions */}
                     {/* Exemplo: <Route path="/transactions" element={<PrivateRoute><TransactionsPage /></PrivateRoute>} /> */}
