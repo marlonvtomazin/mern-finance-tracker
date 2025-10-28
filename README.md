@@ -73,4 +73,18 @@ Siga estas etapas para configurar e executar o projeto em sua máquina local.
     O frontend será executado em `http://localhost:5173` (ou porta similar, dependendo do seu ambiente de desenvolvimento React).
 
 ## 📂 Estrutura do Projeto
-├── client/ # Código React (Frontend) │ ├── src/ │ │ ├── api/ # Configuração do Axios (apiClient.js) │ │ ├── components/ # Componentes reutilizáveis (Header, PrivateRoute, Gráficos) │ │ ├── pages/ # Telas da aplicação (Dashboard, Login, Assets, etc.) │ │ └── App.jsx # Definição de Rotas ├── server/ # Código Express (Backend API) │ ├── config/ # Configuração do Banco de Dados │ ├── controllers/ # Lógica de negócio das rotas (authController, assetController) │ ├── middleware/ # Middlewares (autenticação JWT) │ ├── models/ # Schemas do Mongoose (User, AssetSnapshot) │ ├── routes/ # Definição de Rotas da API │ └── index.js # Arquivo principal do servidor └── README.md # Este arquivo
+.
+├── client/                     # Código React (Frontend)
+│   ├── src/
+│   │   ├── api/                # Configuração do Axios (apiClient.js)
+│   │   ├── components/         # Componentes reutilizáveis (Header, PrivateRoute, Gráficos)
+│   │   ├── pages/              # Telas da aplicação (Dashboard, Login, Assets, etc.)
+│   │   └── App.jsx             # Definição de Rotas
+├── server/                     # Código Express (Backend API)
+│   ├── config/                 # Configuração do Banco de Dados
+│   ├── controllers/            # Lógica de negócio das rotas (authController, assetController)
+│   ├── middleware/             # Middlewares (autenticação JWT)
+│   ├── models/                 # Schemas do Mongoose (User, AssetSnapshot)
+│   ├── routes/                 # Definição de Rotas da API
+│   └── index.js                # Arquivo principal do servidor
+└── README.md                   # Este arquivo
