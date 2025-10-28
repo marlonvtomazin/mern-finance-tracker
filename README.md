@@ -73,6 +73,7 @@ Siga estas etapas para configurar e executar o projeto em sua máquina local.
     O frontend será executado em `http://localhost:5173` (ou porta similar, dependendo do seu ambiente de desenvolvimento React).
 
 ## 📂 Estrutura do Projeto
+```text
 .
 ├── client/                     # Código React (Frontend)
 │   ├── src/
