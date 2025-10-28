@@ -1,4 +1,4 @@
-# 💰 Finance Tracker
+# 💰 Finance Tracker - WORK in PROGRESS
 
 Um sistema completo de gerenciamento de finanças pessoais e acompanhamento de portfólio de ativos, construído com a *MERN stack* (MongoDB, Express, React, Node.js). Este projeto permite que usuários rastreiem o valor de seus ativos ao longo do tempo (snapshots) e visualizem seu desempenho diário.
 
